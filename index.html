@@ -76,44 +76,49 @@
 
         // Body
         const body = new THREE.Mesh(new THREE.SphereGeometry(1, 32, 32), bearMaterial);
-        body.position.y = -0.5;
+        const bodyInitialY = -0.5;
+        body.position.y = bodyInitialY;
         bear.add(body);
+
+        // Head Group
+        const headGroup = new THREE.Group();
+        headGroup.position.y = 0.8;
+        bear.add(headGroup);
 
         // Head
         const head = new THREE.Mesh(new THREE.SphereGeometry(0.7, 32, 32), bearMaterial);
-        head.position.y = 0.8;
-        bear.add(head);
+        headGroup.add(head);
 
         // Ears
         const earGeometry = new THREE.SphereGeometry(0.25, 32, 32);
         const leftEar = new THREE.Mesh(earGeometry, bearMaterial);
-        leftEar.position.set(-0.5, 1.4, 0);
-        bear.add(leftEar);
+        leftEar.position.set(-0.5, 0.6, 0);
+        headGroup.add(leftEar);
         const rightEar = new THREE.Mesh(earGeometry, bearMaterial);
-        rightEar.position.set(0.5, 1.4, 0);
-        bear.add(rightEar);
+        rightEar.position.set(0.5, 0.6, 0);
+        headGroup.add(rightEar);
 
         // Snout
         const snoutMaterial = new THREE.MeshStandardMaterial({ color: 0xeeeeee });
         const snout = new THREE.Mesh(new THREE.SphereGeometry(0.2, 32, 32), snoutMaterial);
-        snout.position.set(0, 0.7, 0.6);
+        snout.position.set(0, -0.1, 0.6);
         snout.scale.z = 1.5;
-        bear.add(snout);
+        headGroup.add(snout);
 
         // Nose
         const noseMaterial = new THREE.MeshStandardMaterial({ color: 0x000000 });
         const nose = new THREE.Mesh(new THREE.SphereGeometry(0.08, 32, 32), noseMaterial);
-        nose.position.set(0, 0.75, 0.8);
-        bear.add(nose);
+        nose.position.set(0, -0.05, 0.8);
+        headGroup.add(nose);
 
         // Eyes
         const eyeGeometry = new THREE.SphereGeometry(0.08, 32, 32);
         const leftEye = new THREE.Mesh(eyeGeometry, noseMaterial);
-        leftEye.position.set(-0.25, 0.9, 0.55);
-        bear.add(leftEye);
+        leftEye.position.set(-0.25, 0.1, 0.55);
+        headGroup.add(leftEye);
         const rightEye = new THREE.Mesh(eyeGeometry, noseMaterial);
-        rightEye.position.set(0.25, 0.9, 0.55);
-        bear.add(rightEye);
+        rightEye.position.set(0.25, 0.1, 0.55);
+        headGroup.add(rightEye);
 
         bear.scale.set(1.5, 1.5, 1.5);
         scene.add(bear);
@@ -131,8 +136,9 @@
         const heartGeometry = new THREE.ShapeGeometry(heartShape);
         const heartMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
         const heart = new THREE.Mesh(heartGeometry, heartMaterial);
+        const heartInitialY = 1;
         heart.scale.set(3, 3, 3);
-        heart.position.set(0, 1, -2);
+        heart.position.set(0, heartInitialY, -2);
         heart.rotation.z = Math.PI;
         scene.add(heart);
 
@@ -147,10 +153,22 @@
         function animate() {
             requestAnimationFrame(animate);
             controls.update();
+            const time = Date.now() * 0.001; // Current time in seconds
 
-            // Make the heart float
-            heart.position.y += Math.sin(Date.now() * 0.002) * 0.01;
+            // Make the heart float smoothly
+            heart.position.y = heartInitialY + Math.sin(time * 2) * 0.2;
             heart.rotation.y += 0.01;
+
+            // --- Bear Animation ---
+            const animationTime = time * 1.5;
+
+            // Head tilt
+            headGroup.rotation.z = Math.sin(animationTime * 1.2) * 0.15; // Side to side tilt
+            headGroup.rotation.y = Math.sin(animationTime * 0.8) * 0.1;  // Gentle turn
+
+            // Breathing
+            const breathCycle = Math.sin(animationTime);
+            body.position.y = bodyInitialY + breathCycle * 0.03;
 
             renderer.render(scene, camera);
         }
