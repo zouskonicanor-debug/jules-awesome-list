@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Un message pour toi</title>
+    <title>Un Message Spécial</title>
     <style>
         body {
             margin: 0;
@@ -11,245 +11,95 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f8ff; /* AliceBlue */
-            font-family: 'Comic Sans MS', 'Chalkboard SE', 'cursive';
-            overflow: hidden;
+            background-color: #d0e8f2; /* Light blue sky */
         }
+        /* Import a nice handwriting font from Google Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
-        #message {
-            position: absolute;
-            top: 5%;
-            padding: 20px 30px;
-            background-color: rgba(255, 182, 193, 0.9); /* LightPink */
-            border-radius: 30px;
+        .container {
             text-align: center;
-            font-size: 2em;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-            z-index: 10;
-            border: 3px solid white;
-            min-height: 1.5em; /* Prevent layout shift */
         }
 
-        .scene {
-            position: relative;
-            width: 400px;
-            height: 400px;
-            margin-top: 100px;
+        svg {
+            width: 90vw;
+            max-width: 600px;
+            overflow: visible; /* Make sure shadows aren't clipped */
         }
 
-        .bear {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            width: 250px;
-            height: 300px;
-            animation: breathe 4s ease-in-out infinite;
+        /* Styling for the message text */
+        .message-text {
+            font-size: 32px;
+            font-family: 'Patrick Hand', cursive;
+            fill: none; /* Initially transparent fill */
+            stroke: #5c4a3d; /* Dark brown text stroke */
+            stroke-width: 0.8;
         }
-
-        .bear-body {
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 180px;
-            height: 220px;
-            background: white;
-            border-radius: 50% 50% 35% 35%;
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-        }
-
-        .head {
-            position: absolute;
-            top: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 130px;
-            background: white;
-            border-radius: 50%;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .ear {
-            position: absolute;
-            top: -10px;
-            width: 40px;
-            height: 40px;
-            background: white;
-            border-radius: 50%;
-            border: 5px solid #e6e6e6;
-        }
-
-        .ear.left { left: 0px; }
-        .ear.right { right: 0px; }
-
-        .eye {
-            position: absolute;
-            top: 50px;
-            width: 12px;
-            height: 12px;
-            background: #2c2c2c;
-            border-radius: 50%;
-        }
-
-        .eye.left { left: 40px; }
-        .eye.right { right: 40px; }
-
-        .snout {
-            position: absolute;
-            top: 65px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 50px;
-            height: 40px;
-            background: #f5f5f5;
-            border-radius: 50%;
-        }
-
-        .nose {
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 18px;
-            height: 12px;
-            background: #2c2c2c;
-            border-radius: 50% 50% 40% 40% / 60% 60% 40% 40%;
-        }
-
-        .paw {
-            position: absolute;
-            bottom: 50px;
-            width: 50px;
-            height: 70px;
-            background: white;
-            border-radius: 50% 50% 40% 40%;
-            z-index: 1;
-        }
-
-        .paw.left {
-            left: 0;
-            transform-origin: top right;
-        }
-
-        .paw.left.writing {
-            animation: write 0.4s ease-in-out infinite;
-        }
-
-        .paw.right {
-            right: 0;
-        }
-
-        .heart {
-            position: absolute;
-            top: 40%;
-            left: 75%;
-            width: 80px;
-            height: 80px;
-            animation: pulse 1.5s ease-in-out infinite;
-        }
-
-        .heart::before,
-        .heart::after {
-            content: '';
-            position: absolute;
-            left: 40px;
-            top: 0;
-            width: 40px;
-            height: 64px;
-            background: #ff4757;
-            border-radius: 40px 40px 0 0;
-            transform: rotate(-45deg);
-            transform-origin: 0 100%;
-        }
-
-        .heart::after {
-            left: 0;
-            transform: rotate(45deg);
-            transform-origin: 100% 100%;
-        }
-
-        @keyframes write {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(-8deg); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        @keyframes breathe {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes blink {
-            from, to { color: transparent; }
-            50% { color: white; }
-        }
-
-        #message.typing-cursor::after {
-            content: '▋';
-            margin-left: 5px;
-            animation: blink 1s step-end infinite;
-        }
-
     </style>
 </head>
 <body>
-    <div id="message">
-        Réveille-toi ma princesse 💕💕❤️ et passe une bonne journée
+    <div class="container">
+        <svg viewBox="0 0 400 400">
+            <defs>
+                <!-- A drop shadow filter for a bit of depth -->
+                <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blur"/>
+                    <feOffset in="blur" dx="4" dy="4" result="offsetBlur"/>
+                    <feMerge>
+                        <feMergeNode in="offsetBlur"/>
+                        <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                </filter>
+                 <!-- Heart path for reuse -->
+                <path id="heart-path" d="M10,30 A20,20,0,0,1,50,30 A20,20,0,0,1,90,30 Q90,60,50,90 Q10,60,10,30 Z" />
+                <!-- Path for the paw to follow -->
+                <path id="paw-motion-path" d="M-5,100 C 40,20 150,150 250,50 S 350,100 350,100" fill="none" stroke="none" />
+            </defs>
+
+            <!-- The Bear -->
+            <g id="bear" transform="translate(150, 150)" filter="url(#shadow)">
+                <!-- Body -->
+                <path d="M-60,120 C-90,120 -110,80 -110,40 C-110,0 -80,-20 -40,-20 C0,-20 20,0 20,40 C20,80 0,120 -30,120 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+                <!-- Head -->
+                <g id="head" transform="translate(0,0)">
+                    <circle cx="-15" cy="-40" r="50" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+                    <circle cx="-55" cy="-80" r="15" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+                    <circle cx="25" cy="-80" r="15" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+                    <ellipse cx="-15" cy="-30" rx="25" ry="20" fill="#f5f5f5"/>
+                    <circle cx="-35" cy="-50" r="4" fill="#2c2c2c"/>
+                    <circle cx="5" cy="-50" r="4" fill="#2c2c2c"/>
+                    <path d="M-22,-35 Q-15,-25 -8,-35 Z" fill="#2c2c2c"/>
+                </g>
+                <!-- Static Paw -->
+                <path d="M-90,50 C-100,50 -110,60 -110,80 C-110,100 -90,110 -80,100 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2"/>
+                <!-- Writing Paw -->
+                <g id="writing-paw" transform="translate(50, -100)">
+                    <path d="M-10,60 C-20,60 -30,70 -30,90 C-30,110 -10,120 0,110 Z" fill="#ffffff" stroke="#e0e0e0" stroke-width="2" transform="rotate(20)"/>
+                    <animateMotion dur="11s" begin="1s" fill="freeze" rotate="auto">
+                        <mpath href="#paw-motion-path"/>
+                    </animateMotion>
+                </g>
+            </g>
+
+            <!-- The Heart -->
+            <g id="heart" transform="translate(280, 200)">
+                 <use href="#heart-path" fill="#ff4757"/>
+                 <animateTransform attributeName="transform" type="scale" values="1; 1.1; 1" begin="0s" dur="1.5s" repeatCount="indefinite" additive="sum"/>
+            </g>
+
+            <!-- The message text -->
+            <g id="message-group" transform="translate(20, 50)">
+                <text class="message-text" y="0" style="stroke-dasharray: 800; stroke-dashoffset: 800;">
+                    Réveille-toi ma princesse 💕💕❤️
+                    <animate attributeName="stroke-dashoffset" from="800" to="0" dur="6s" begin="1s" fill="freeze" />
+                    <animate attributeName="fill" from="none" to="#5c4a3d" dur="0.1s" begin="7s" fill="freeze" />
+                </text>
+                <text class="message-text" y="40" style="stroke-dasharray: 600; stroke-dashoffset: 600;">
+                    et passe une bonne journée
+                    <animate attributeName="stroke-dashoffset" from="600" to="0" dur="5s" begin="7s" fill="freeze" />
+                    <animate attributeName="fill" from="none" to="#5c4a3d" dur="0.1s" begin="12s" fill="freeze" />
+                </text>
+            </g>
+        </svg>
     </div>
-    <div class="scene">
-        <div class="bear">
-            <div class="bear-body"></div>
-            <div class="head">
-                <div class="ear left"></div>
-                <div class="ear right"></div>
-                <div class="eye left"></div>
-                <div class="eye right"></div>
-                <div class="snout">
-                    <div class="nose"></div>
-                </div>
-            </div>
-            <div class="paw left"></div>
-            <div class="paw right"></div>
-        </div>
-        <div class="heart"></div>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const messageEl = document.getElementById('message');
-            const pawEl = document.querySelector('.paw.left');
-            const originalText = messageEl.innerHTML;
-            messageEl.innerHTML = '';
-
-            let i = 0;
-            const typingSpeed = 120; // ms per character
-
-            function typeWriter() {
-                if (i < originalText.length) {
-                    messageEl.innerHTML += originalText.charAt(i);
-                    i++;
-                    setTimeout(typeWriter, typingSpeed);
-                } else {
-                    // Stop paw animation and remove cursor when done
-                    pawEl.classList.remove('writing');
-                    messageEl.classList.remove('typing-cursor');
-                }
-            }
-
-            // Start after a short delay
-            setTimeout(() => {
-                messageEl.classList.add('typing-cursor');
-                pawEl.classList.add('writing');
-                typeWriter();
-            }, 1000);
-        });
-    </script>
 </body>
 </html>
