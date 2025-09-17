@@ -28,6 +28,7 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
             z-index: 10;
             border: 3px solid white;
+            min-height: 1.5em; /* Prevent layout shift */
         }
 
         .scene {
@@ -130,7 +131,10 @@
         .paw.left {
             left: 0;
             transform-origin: top right;
-            animation: wave 2.5s ease-in-out infinite;
+        }
+
+        .paw.left.writing {
+            animation: write 0.4s ease-in-out infinite;
         }
 
         .paw.right {
@@ -166,10 +170,9 @@
             transform-origin: 100% 100%;
         }
 
-        @keyframes wave {
-            0%, 100% { transform: rotate(0deg); }
-            20%, 60% { transform: rotate(-30deg); }
-            40%, 80% { transform: rotate(10deg); }
+        @keyframes write {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(-8deg); }
         }
 
         @keyframes pulse {
@@ -181,6 +184,17 @@
             0% { transform: translateY(0); }
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0); }
+        }
+
+        @keyframes blink {
+            from, to { color: transparent; }
+            50% { color: white; }
+        }
+
+        #message.typing-cursor::after {
+            content: '▋';
+            margin-left: 5px;
+            animation: blink 1s step-end infinite;
         }
 
     </style>
@@ -206,5 +220,36 @@
         </div>
         <div class="heart"></div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const messageEl = document.getElementById('message');
+            const pawEl = document.querySelector('.paw.left');
+            const originalText = messageEl.innerHTML;
+            messageEl.innerHTML = '';
+
+            let i = 0;
+            const typingSpeed = 120; // ms per character
+
+            function typeWriter() {
+                if (i < originalText.length) {
+                    messageEl.innerHTML += originalText.charAt(i);
+                    i++;
+                    setTimeout(typeWriter, typingSpeed);
+                } else {
+                    // Stop paw animation and remove cursor when done
+                    pawEl.classList.remove('writing');
+                    messageEl.classList.remove('typing-cursor');
+                }
+            }
+
+            // Start after a short delay
+            setTimeout(() => {
+                messageEl.classList.add('typing-cursor');
+                pawEl.classList.add('writing');
+                typeWriter();
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
